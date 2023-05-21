@@ -1,8 +1,10 @@
+<!-- eslint-disable no-console -->
 <script setup lang="ts" generic="T extends any, O extends any">
+import type { BlockState } from '~/type'
 
-const WIDTH = 10
-const HEIGHT = 10
-const dev = true
+const WIDTH = 5
+const HEIGHT = 5
+const dev = false
 let generate = false
 const directions = [
   [-1, 0],
@@ -12,7 +14,7 @@ const directions = [
   [0, 1],
   [1, -1],
   [1, 0],
-  [1, 1]
+  [1, 1],
 ]
 const numberColors = [
   'text-transparent',
@@ -25,26 +27,26 @@ const numberColors = [
   'text-pink-500',
 
 ]
-interface BlockState {
-  x: number
-  y: number
-  revealed?: boolean
-  mine?: boolean
-  flagged?: boolean
-  adjacentMines: number
-}
-const state = reactive(
+
+const state = ref(
   Array.from({ length: HEIGHT }, (_, y) =>
     Array.from({ length: WIDTH },
       (_, x): BlockState => ({
         x, y, adjacentMines: 0,
-      })
+      }),
 
-    )
-  )
+    ),
+  ),
 )
+function onRightClick(block: BlockState) {
+  if (block.revealed)
+    return
+  block.flagged = !block.flagged
+
+  checkGameState()
+}
 function generateMines(initial: BlockState) {
-  for (const row of state) {
+  for (const row of state.value) {
     for (const block of row) {
       if (Math.abs(initial.x - block.x) <= 1)
         continue
@@ -56,32 +58,34 @@ function generateMines(initial: BlockState) {
   updateNumbers()
 }
 function updateNumbers() {
-  state.forEach((row, y) => {
+  state.value.forEach((row, y) => {
     row.forEach((block, x) => {
       if (block.mine)
         return
       getSiblings(block).forEach((b) => {
-        if (b.mine) {
+        if (b.mine)
           block.adjacentMines += 1
-        }
       })
     })
   })
 }
 function getBlockClass(block: BlockState) {
-  if (!block.revealed)
+  if (block.flagged)
     return 'bg-gray-500/10'
-  return block.mine ? "text-red" : numberColors[block.adjacentMines]
+  if (!block.revealed)
+    return 'bg-gray-500/10 hover:bg-gray-500/20'
+  return block.mine ? 'text-red' : numberColors[block.adjacentMines]
 }
-function onClick(block: BlockState) {
+function onClick(e: MouseEvent, block: BlockState) {
   block.revealed = true
   if (!generate) {
     generateMines(block)
     generate = true
   }
   if (block.mine)
-    alert("MOOOOM!")
+    alert('MOOOOM!')
   expendZero(block)
+  checkGameState()
 }
 function expendZero(block: BlockState) {
   if (block.adjacentMines)
@@ -95,30 +99,48 @@ function expendZero(block: BlockState) {
 }
 function getSiblings(block: BlockState) {
   return directions.map(([ox, oy]) => {
-    const dx = block.x + ox;
+    const dx = block.x + ox
     const dy = block.y + oy
     if (dx < 0 || dy < 0 || dx >= WIDTH || dy >= HEIGHT)
       return undefined
-    return state[dy][dx]
+    return state.value[dy][dx]
   }).filter(Boolean) as BlockState[]
+}
+function checkGameState() {
+  if (!generate)
+    return
+
+  const blocks = state.value.flat()
+  if (blocks.every(block => block.revealed || block.flagged)) {
+    if (blocks.every(block => block.revealed || (block.flagged && !block.mine)))
+      alert('you chect!')
+
+    alert('you win!')
+  }
 }
 </script>
 
 <template>
   <div>
     <div>mineswepeer</div>
-    <div pt-5></div>
+    <div pt-5 />
     <div v-for="row, y in state" :key="y" flex justify-center>
-      <button w-10 h-10 flex items-center justify-center v-for="item, x in row" :key="x" hover="bg-gray-400"
-        :class="getBlockClass(item)" border="1 gray-500/10" @click="onClick(item)">
-        <template v-if="item.revealed || dev">
-          <div v-if="item.mine" i-mdi-mine>
-          </div>
+      <button
+        v-for="item, x in row"
+        :key="x" h-10 w-10 flex items-center justify-center
+        :class="getBlockClass(item)" border="1 gray-500/10"
+        @click="onClick($event, item)"
+        @contextmenu.prevent="onRightClick(item)"
+      >
+        <template v-if="item.flagged">
+          <div i-mdi-flag text-red />
+        </template>
+        <template v-else-if="item.revealed || dev">
+          <div v-if="item.mine" i-mdi-mine />
           <div v-else>
             {{ item.adjacentMines }}
           </div>
         </template>
-
       </button>
     </div>
   </div>

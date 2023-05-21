@@ -2,6 +2,7 @@
 .vite-ssg-dist
 .vite-ssg-temp
 *.local
+.vscode/
 dist
 dist-ssr
 node_modules
