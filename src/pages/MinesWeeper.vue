@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { BlockState } from '~/type'
 
+// 更换页面标题
+useTitle('MinesWeeper')
+
 const WIDTH = 10
 const HEIGHT = 10
 
@@ -106,10 +109,8 @@ function checkGameState() {
     return
 
   const blocks = state.value.flat()
-  if (!blocks.some(block => !block.mine && !block.revealed)) {
+  if (!blocks.some(block => !block.mine && !block.revealed))
     gameState.value = 'won'
-    alert(gameState.value)
-  }
 }
 function showAllMines() {
   state.value.flat().forEach((i) => {
@@ -148,5 +149,6 @@ reset()
         <div>游戏结束: {{ gameState.toLocaleUpperCase() }}</div>
       </template>
     </div>
+    <Confetti :is-passed="gameState === 'won'" />
   </div>
 </template>

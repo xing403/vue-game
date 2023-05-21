@@ -1,4 +1,5 @@
 {
+  "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@8.2.0",
   "scripts": {
@@ -13,14 +14,16 @@
     "postinstall": "npx simple-git-hooks"
   },
   "dependencies": {
-    "@iconify-json/mdi": "^1.1.52",
     "@vueuse/core": "^9.13.0",
+    "canvas-confetti": "^1.6.0",
     "vue": "^3.3.2",
     "vue-router": "^4.2.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.38.6",
     "@iconify-json/carbon": "^1.1.16",
+    "@iconify-json/mdi": "^1.1.52",
+    "@types/canvas-confetti": "^1.6.0",
     "@types/node": "^18.16.9",
     "@unocss/eslint-config": "^0.51.12",
     "@unocss/reset": "^0.51.12",
