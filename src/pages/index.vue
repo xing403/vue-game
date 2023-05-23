@@ -4,14 +4,13 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 function goto(url: string) {
-  if (/\//.test(url))
-    router.push(url)
+  router.push(url)
 }
 </script>
 
 <template>
   <div pt5 flex="~ gap-1" justify="center">
-    <button btn @click="goto('/MinesWeeper')">
+    <button btn @click="goto('/mines-weeper')">
       扫雷
     </button>
   </div>

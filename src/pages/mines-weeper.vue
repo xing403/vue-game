@@ -4,8 +4,8 @@ import type { BlockState } from '~/type'
 // 更换页面标题
 useTitle('MinesWeeper')
 
-const WIDTH = 10
-const HEIGHT = 10
+const WIDTH = 15
+const HEIGHT = 15
 
 let generate = false
 const mineNum = ref(0)
@@ -70,7 +70,7 @@ function updateNumbers(state: BlockState[][]) {
   })
 }
 function onClick(block: BlockState) {
-  if (gameState.value !== 'play')
+  if (gameState.value !== 'play' || block.flagged)
     return
   block.revealed = true
   if (!generate) {
@@ -136,7 +136,7 @@ reset()
       />
     </div>
     <div flex="~ gap-1" justify="center" pt5>
-      <button btn @click="toggleDev()">
+      <button v-if="false" btn @click="toggleDev()">
         {{ isDev }}
       </button>
       <button btn @click="reset">

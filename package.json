@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "packageManager": "pnpm@8.2.0",
   "scripts": {
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.13.0",
+    "@vueuse/router": "^10.1.2",
     "canvas-confetti": "^1.6.0",
     "vue": "^3.3.2",
     "vue-router": "^4.2.0"
