@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ElMessageBox } from 'element-plus'
 import type { BlockState } from '~/type'
 
 // 更换页面标题
@@ -116,7 +117,14 @@ function onClick(block: BlockState) {
   }
   if (block.mine) {
     gameState.value = 'lost'
-    alert(gameState.value)
+    ElMessageBox({
+      title: '游戏结束',
+      message: h('div', {}, [
+        h('div', { class: 'i-carbon-face-dizzy text-5xl ma text-red' }),
+        h('div', { class: 'text-center ma' }, 'you lost'),
+      ]),
+      showCancelButton: true,
+    })
     showAllMines()
   }
   expendZero(block)
