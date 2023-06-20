@@ -17,6 +17,7 @@
     "@vueuse/core": "^9.13.0",
     "@vueuse/router": "^10.1.2",
     "canvas-confetti": "^1.6.0",
+    "element-plus": "^2.3.6",
     "vue": "^3.3.2",
     "vue-router": "^4.2.0"
   },
