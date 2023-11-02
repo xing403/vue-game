@@ -29,6 +29,7 @@
     "@types/node": "^18.16.9",
     "@unocss/eslint-config": "^0.51.12",
     "@unocss/reset": "^0.51.12",
+    "@unocss/transformer-directives": "^0.57.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue-macros/volar": "^0.9.8",
     "@vue/test-utils": "^2.3.2",
