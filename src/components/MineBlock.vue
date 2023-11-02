@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ block: BlockState }>()
+defineProps<{ block: MineBlockState }>()
 const numberColors = [
   'text-transparent',
   'text-blue-500',
@@ -11,7 +11,7 @@ const numberColors = [
   'text-pink-500',
 
 ]
-function getBlockClass(block: BlockState) {
+function getBlockClass(block: MineBlockState) {
   if (block.flagged)
     return 'bg-gray-500/10'
   if (!block.revealed)

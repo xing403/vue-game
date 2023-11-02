@@ -5,11 +5,11 @@ import {
   state,
 } from './main'
 
-export function generateMines(state: BlockState[][], initial: BlockState, length: number) {
+export function generateMines(state: MineBlockState[][], initial: MineBlockState, length: number) {
   generateMine(state, initial, length)
   updateNumbers(state)
 }
-export function generateMine(state: BlockState[][], initial: BlockState, length: number) {
+export function generateMine(state: MineBlockState[][], initial: MineBlockState, length: number) {
   if (length === 0)
     return
   const x = randomInt(0, gameConfig[gameLevel.value].width)
@@ -25,7 +25,7 @@ export function generateMine(state: BlockState[][], initial: BlockState, length:
     generateMine(state, initial, length)
   }
 }
-export function updateNumbers(state: BlockState[][]) {
+export function updateNumbers(state: MineBlockState[][]) {
   state.forEach((row, y) => {
     row.forEach((block, x) => {
       if (block.mine)
@@ -38,16 +38,16 @@ export function updateNumbers(state: BlockState[][]) {
   })
 }
 
-export function getSiblings(block: BlockState) {
+export function getSiblings(block: MineBlockState) {
   return directions.map(([ox, oy]) => {
     const dx = block.x + ox
     const dy = block.y + oy
     if (dx < 0 || dy < 0 || dx >= gameConfig[gameLevel.value].width || dy >= gameConfig[gameLevel.value].height)
       return undefined
     return state.value[dy][dx]
-  }).filter(Boolean) as BlockState[]
+  }).filter(Boolean) as MineBlockState[]
 }
-export function expendZero(block: BlockState) {
+export function expendZero(block: MineBlockState) {
   if (block.adjacentMines)
     return
   getSiblings(block).forEach((s) => {

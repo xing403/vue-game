@@ -5,6 +5,7 @@ meta:
 
 <script setup lang="ts">
 import { ElMessageBox } from 'element-plus'
+import type { GameLevel } from './main'
 import {
   expendZero,
   flagNum,
@@ -19,6 +20,7 @@ import {
   state,
 } from './main'
 
+const selectgameLevel = ref<GameLevel>(gameLevel.value)
 function gameLost() {
   ElMessageBox({
     title: '游戏结束',
@@ -42,11 +44,11 @@ function reset() {
   mineNum.value = gameConfig[gameLevel.value].mineNum
   state.value = Array.from({ length: gameConfig[gameLevel.value].height }, (_, y) =>
     Array.from({ length: gameConfig[gameLevel.value].width },
-      (_, x): BlockState => ({ x, y, adjacentMines: 0 }),
+      (_, x): MineBlockState => ({ x, y, adjacentMines: 0 }),
     ),
   )
 }
-function onRightClick(block: BlockState) {
+function onRightClick(block: MineBlockState) {
   if (block.revealed)
     return
   if (flagNum.value === mineNum.value && block.flagged) {
@@ -60,7 +62,7 @@ function onRightClick(block: BlockState) {
   checkGameState()
 }
 
-function onClick(block: BlockState) {
+function onClick(block: MineBlockState) {
   if (gameState.value !== 'play' || block.flagged)
     return
   block.revealed = true
@@ -96,13 +98,14 @@ function showAllMines() {
 function handleGameSetting() {
   gameSettingDialog.value = true
 }
-function handleChangeGameSetting() {
-  gameSettingDialog.value = false
-  reset()
-}
 watchEffect(checkGameState)
 
 reset()
+function confirm() {
+  gameLevel.value = selectgameLevel.value
+  reset()
+  gameSettingDialog.value = false
+}
 </script>
 
 <template>
@@ -126,19 +129,23 @@ reset()
     </div>
     <Confetti :is-passed="gameState === 'won'" />
     <nav mt-6 inline-flex gap-2 text-xl>
+      <go-back />
       <button icon-btn i-carbon-settings @click="handleGameSetting()" />
     </nav>
     <el-dialog v-model="gameSettingDialog" title="游戏设置">
       <el-form label-position="top" label-width="100px" style="max-width: 460px">
         <el-form-item label="游戏等级">
-          <el-radio-group v-model="gameLevel">
-            <el-radio v-for="item, index in gameLevels" :key="index" :label="item" @change="handleChangeGameSetting">
+          <el-radio-group v-model="selectgameLevel">
+            <el-radio v-for="item, index in gameLevels" :key="index" :label="item">
               {{ item }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
       <template #footer>
+        <el-button type="primary" @click="confirm">
+          确定
+        </el-button>
         <el-button @click="gameSettingDialog = false">
           取消
         </el-button>

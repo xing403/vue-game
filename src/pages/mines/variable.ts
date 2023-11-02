@@ -1,7 +1,4 @@
-interface Obj<T> {
-  [key: string | number]: T
-}
-type GameLevel = 'simple' | 'general' | 'difficult' | 'hell'
+export type GameLevel = 'simple' | 'general' | 'difficult' | 'hell'
 
 export const generate = ref<boolean>(false)
 export const mineNum = ref<number>(15)
@@ -9,7 +6,7 @@ export const flagNum = ref<number>(0)
 export const gameState = ref<'play' | 'won' | 'lost'>('play')
 export const gameLevel = ref<GameLevel>('general')
 export const gameSettingDialog = ref(false)
-export const state = ref<BlockState[][]>([])
+export const state = ref<MineBlockState[][]>([])
 
 export const gameLevels: string[] = ['simple', 'general', 'difficult', 'hell']
 export const gameConfig: Obj<Obj<number>> = {

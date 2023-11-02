@@ -10,6 +10,11 @@ const gameMap = ref([{
   name: '扫雷',
   url: '/mines',
   icon: 'i-mdi-mine',
+}, {
+  key: 2,
+  name: '五子棋',
+  url: '/gomoku',
+  icon: 'i-mdi-transition-masked',
 }])
 function handleGoGame(url: string) {
   router.push(url)
