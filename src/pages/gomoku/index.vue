@@ -11,6 +11,7 @@ import {
   generateMap,
   reset,
   state,
+  winner,
 } from './main'
 
 generateMap()
@@ -28,7 +29,7 @@ function handleClick(block: GomokuBlockState) {
   <div flex="~ row gap-1 items-center" justify="center">
     <div v-if="gameState === 'over'" text-50px text="center" ml-50px>
       <div>游戏结束</div>
-      <div v-text="`${currentPlayer === 'black' ? '黑' : '白'}方 获胜`" />
+      <div v-text="`${winner === 'black' ? '黑' : '白'}方 获胜`" />
     </div>
     <div bg-gray-400>
       <div v-for="row, y in state" :key="y" flex justify-center>
@@ -40,7 +41,7 @@ function handleClick(block: GomokuBlockState) {
     </div>
     <div v-if="gameState === 'over'" text-50px text="center" mr-50px>
       <div>游戏结束</div>
-      <div v-text="`${currentPlayer === 'black' ? '黑' : '白'}方 获胜`" />
+      <div v-text="`${winner === 'black' ? '黑' : '白'}方 获胜`" />
     </div>
   </div>
   <Confetti :is-passed="gameState === 'over'" />
@@ -48,6 +49,6 @@ function handleClick(block: GomokuBlockState) {
     <go-back />
     <button icon-btn i-mdi-refresh @click="reset" />
     <button icon-btn i-carbon-sun dark:i-carbon-moon @click="toggleDark()" />
-    <div>当前执棋者: {{ currentPlayer === 'black' ? '黑' : '白' }}方</div>
+    <div>当前执棋者: {{ winner === 'black' ? '黑' : '白' }}方</div>
   </nav>
 </template>
