@@ -26,8 +26,8 @@ export function generateMine(state: MineBlockState[][], initial: MineBlockState,
   }
 }
 export function updateNumbers(state: MineBlockState[][]) {
-  state.forEach((row, y) => {
-    row.forEach((block, x) => {
+  state.forEach((row) => {
+    row.forEach((block) => {
       if (block.mine)
         return
       getSiblings(block).forEach((b) => {

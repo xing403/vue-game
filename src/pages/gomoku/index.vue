@@ -27,10 +27,6 @@ function handleClick(block: GomokuBlockState) {
 
 <template>
   <div flex="~ row gap-1 items-center" justify="center">
-    <div v-if="gameState === 'over'" text-50px text="center" ml-50px>
-      <div>游戏结束</div>
-      <div v-text="`${winner === 'black' ? '黑' : '白'}方 获胜`" />
-    </div>
     <div bg-gray-400>
       <div v-for="row, y in state" :key="y" flex justify-center>
         <GomokuBlock
@@ -39,16 +35,17 @@ function handleClick(block: GomokuBlockState) {
         />
       </div>
     </div>
-    <div v-if="gameState === 'over'" text-50px text="center" mr-50px>
-      <div>游戏结束</div>
-      <div v-text="`${winner === 'black' ? '黑' : '白'}方 获胜`" />
-    </div>
   </div>
   <Confetti :is-passed="gameState === 'over'" />
-  <nav mt-6 inline-flex gap-2 text-xl>
-    <go-back />
-    <button icon-btn i-mdi-refresh @click="reset" />
-    <button icon-btn i-carbon-sun dark:i-carbon-moon @click="toggleDark()" />
-    <div>当前执棋者: {{ winner === 'black' ? '黑' : '白' }}方</div>
-  </nav>
+  <Footer>
+    <template #extend>
+      <button icon-btn i-mdi-refresh @click="reset" />
+      <button icon-btn i-carbon-sun dark:i-carbon-moon @click="toggleDark()" />
+      <div>当前执棋者: {{ winner !== 'black' ? '黑' : '白' }}方</div>
+    </template>
+  </Footer>
+  <div
+    v-if="gameState === 'over'" text-50px text="center" mr-50px
+    v-text="`游戏结束 ${winner === 'black' ? '黑' : '白'}方 获胜`"
+  />
 </template>

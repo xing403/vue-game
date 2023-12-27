@@ -15,6 +15,11 @@ const gameMap = ref([{
   name: '五子棋',
   url: '/gomoku',
   icon: 'i-mdi-transition-masked',
+}, {
+  key: 2,
+  name: 'Qwerty',
+  url: '/qwerty',
+  icon: 'i-mdi-format-text-variant',
 }])
 function handleGoGame(url: string) {
   router.push(url)

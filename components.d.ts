@@ -9,8 +9,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Chronograph: typeof import('./src/components/Chronograph.vue')['default']
     Confetti: typeof import('./src/components/Confetti.vue')['default']
-    GoBack: typeof import('./src/components/GoBack.vue')['default']
+    Footer: typeof import('./src/components/Footer.vue')['default']
     GomokuBlock: typeof import('./src/components/GomokuBlock.vue')['default']
     MineBlock: typeof import('./src/components/MineBlock.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

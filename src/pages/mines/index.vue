@@ -128,10 +128,11 @@ function confirm() {
       </template>
     </div>
     <Confetti :is-passed="gameState === 'won'" />
-    <nav mt-6 inline-flex gap-2 text-xl>
-      <go-back />
-      <button icon-btn i-carbon-settings @click="handleGameSetting()" />
-    </nav>
+    <Footer>
+      <template #extend>
+        <button icon-btn i-carbon-settings @click="handleGameSetting()" />
+      </template>
+    </Footer>
     <el-dialog v-model="gameSettingDialog" title="游戏设置">
       <el-form label-position="top" label-width="100px" style="max-width: 460px">
         <el-form-item label="游戏等级">
@@ -143,12 +144,8 @@ function confirm() {
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button type="primary" @click="confirm">
-          确定
-        </el-button>
-        <el-button @click="gameSettingDialog = false">
-          取消
-        </el-button>
+        <el-button type="primary" @click="confirm" v-text="'确定'" />
+        <el-button @click="gameSettingDialog = false" v-text="'取消'" />
       </template>
     </el-dialog>
   </div>
