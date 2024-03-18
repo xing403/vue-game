@@ -32,7 +32,7 @@ function gameLost() {
     center: true,
     message: h('div', {}, [
       h('div', { class: 'i-carbon-face-dizzy text-5xl ma text-red' }),
-      h('div', { class: 'text-center ma' }, '你输了'),
+      h('div', { class: 'text-center ma' }, '你输了，继续努力吧'),
     ]),
   })
 }
@@ -79,6 +79,37 @@ function onClick(block: MineBlockState) {
   checkGameState()
 }
 
+function onDoubleClick(block: MineBlockState) {
+  if (block.flagged)
+    return
+
+  let aroundFlagged = 0
+  Array.from({ length: 9 }).forEach((_, index: number) => {
+    const y = index % 3 - 1
+    const x = Math.floor(index / 3) - 1
+    if (!(block.y + y < 0 || block.x + x < 0 || block.y + y >= gameConfig[gameLevel.value].height || block.x + x >= gameConfig[gameLevel.value].width)) {
+      if (state.value[block.y + y][block.x + x].flagged)
+        aroundFlagged++
+    }
+  })
+  if (block.revealed && aroundFlagged === block.adjacentMines) {
+    Array.from({ length: 9 }).forEach((_, index: number) => {
+      const y = index % 3 - 1
+      const x = Math.floor(index / 3) - 1
+
+      if (!(block.y + y < 0 || block.x + x < 0 || block.y + y >= gameConfig[gameLevel.value].height || block.x + x >= gameConfig[gameLevel.value].width)) {
+        const offset = state.value[block.y + y][block.x + x]
+        if (!offset.flagged) {
+          offset.revealed = true
+          if (offset.adjacentMines === 0)
+            expendZero(offset)
+        }
+      }
+    })
+  }
+  checkGameState()
+}
+
 function checkGameState() {
   if (!generate.value || gameState.value !== 'play')
     return
@@ -86,8 +117,11 @@ function checkGameState() {
   const blocks = state.value.flat()
   if (!blocks.some(block => !block.mine && !block.revealed)
     || blocks.filter(block => block.mine).every(block => block.flagged)
-  )
-    gameState.value = 'won'
+  ) { gameState.value = 'won' }
+  else if (blocks.filter(block => block.mine).some(block => block.revealed)) {
+    gameState.value = 'lost'
+    gameLost()
+  }
 }
 function showAllMines() {
   state.value.flat().forEach((i) => {
@@ -113,7 +147,7 @@ function confirm() {
     <div v-for="row, y in state" :key="y" flex justify-center>
       <MineBlock
         v-for="item, x in row" :key="x" h-10 w-10 flex items-center justify-center :block="item"
-        @click="onClick(item)" @contextmenu.prevent="onRightClick(item)"
+        @click="onClick(item)" @contextmenu.prevent="onRightClick(item)" @dblclick="onDoubleClick(item)"
       />
     </div>
     <div flex="~ gap-1" justify="center" pt5>
