@@ -11,21 +11,17 @@ defineProps<{ block: GomokuBlockState }>()
       bb: block.y === 14,
     }"
   >
-    <template v-if="block.used">
-      <div class="pawn" z-10 i-mdi-checkbox-blank-circle :style="{ color: block.user }" />
-    </template>
-    <template v-else>
-      <div :style="{ color: block.user }" />
-    </template>
+    <div v-if="block.used" z-10 i-mdi-checkbox-blank-circle :style="{ color: block.user }" />
+    <div v-else class="empty" i-mdi-checkbox-blank-circle z-10 />
   </button>
 </template>
 
 <style lang="postcss">
 .lattice {
-  @apply relative border-style-double overflow-hidden;
+  @apply relative divide-double overflow-hidden;
 
   &.bl {
-    @apply  border-l-5;
+    @apply border-l-5;
   }
 
   &.br {
@@ -54,8 +50,12 @@ defineProps<{ block: GomokuBlockState }>()
     @apply border-t-1 w-10 bg-gray-600;
   }
 
-  &:hover {
-    @apply bg-gray-400;
+  &:hover .empty {
+    @apply block;
+  }
+
+  .empty {
+    @apply hidden text-gray-200;
   }
 }
 </style>
