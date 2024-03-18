@@ -1,2 +1,4 @@
-# Vue-Minesweeper
-This is a minesweeper game
+# vue games
+Here are some web games to play when you're bored
+* [x] Mine sweeping
+* [x] gomoku
