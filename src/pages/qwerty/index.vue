@@ -41,7 +41,7 @@ function onKeyBoardDown(event: KeyboardEvent) {
     if (status.value.length === word.value.name.length) {
       input.value.length = 0
       status.value.length = 0
-      currentIndex.value++
+      currentIndex.value = Math.floor(Math.random() * dict.words.length)
     }
     return
   }
